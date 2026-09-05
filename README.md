@@ -25,7 +25,7 @@ and deployment mechanics, pausing at two gates for a person.
 | 12 | Artifact Agent (scrollytelling HTML) | `pipeline/artifact_agent.py`, `pipeline/charts.py`, `templates/` |
 | 13 | QA Agent | `pipeline/qa_agent.py` |
 | — | Human Gate #2 (approve/revise/kill) | `pipeline/gates.py` |
-| 14 | Publish Agent | `pipeline/publish_agent.py`, `.github/workflows/football-editorial-agent-pages.yml` |
+| 14 | Publish Agent | `pipeline/publish_agent.py`, `.github/workflows/pages.yml` |
 
 `pipeline/orchestrator.py` wires all of the above into one run, matching the
 section 3 architecture diagram. `pipeline/models.py` holds dataclasses that
@@ -34,7 +34,6 @@ serialize to exactly the JSON shapes in the spec (sections 5, 8, 9, 10).
 ## Quickstart
 
 ```bash
-cd football_editorial_agent
 pip install -r requirements.txt   # just Jinja2
 
 # Interactive: you play both human gates at the terminal
@@ -66,11 +65,11 @@ somewhere other than the defaults.
 
 ### Deploying to GitHub Pages
 
-`.github/workflows/football-editorial-agent-pages.yml` deploys whatever is
-committed under `football_editorial_agent/site/` to GitHub Pages on every
-push to `main` that touches that path (or via manual `workflow_dispatch`).
-One-time setup: in the repo's **Settings → Pages**, set **Source** to
-**GitHub Actions**.
+`.github/workflows/pages.yml` deploys whatever is committed under `site/`
+to GitHub Pages on every push to `main` that touches that path (or via
+manual `workflow_dispatch`). Pages is already enabled for this repo with
+**Source: GitHub Actions**; the live site is
+https://menpente.github.io/football-arguments-lab/.
 
 The workflow never runs the pipeline itself — it only publishes what a
 human already approved at Gate #2 and a commit already carries. That keeps
