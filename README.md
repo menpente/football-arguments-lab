@@ -134,3 +134,7 @@ offline with no API keys:
   from stdin or a scripted dict. The `GateDecision` schema is UI-agnostic —
   a web form or Slack approval flow can produce the same object and hand it
   to `run_pipeline`.
+
+## License
+
+GPL-3.0 — see [LICENSE](LICENSE).
