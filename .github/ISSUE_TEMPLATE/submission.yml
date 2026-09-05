@@ -1,0 +1,25 @@
+name: Submit a question
+description: Propose a football debate for the editorial pipeline to settle with data.
+title: "[submission] "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Your question joins the Reader-submitted section of the next editorial
+        run. An editor decides at Gate #1 whether it becomes a story.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: One clear football debate, phrased as a question.
+      placeholder: Is Rodri actually irreplaceable for City?
+    validations:
+      required: true
+  - type: input
+    id: note
+    attributes:
+      label: Note
+      description: Optional context for the editor — where you see this take, why it matters.
+    validations:
+      required: false

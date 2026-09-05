@@ -1,0 +1,96 @@
+name: Ingest question submissions
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: question-submissions
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: github.event.label.name == 'submission' && github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Parse the issue and queue the submission
+        id: queue
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          python - <<'PY'
+          import os, re, subprocess, sys
+
+          body = os.environ.get("ISSUE_BODY") or ""
+          # GitHub issue-form bodies render as:  ### <Label>\n\n<value>\n\n
+          sections = {}
+          for m in re.finditer(r"^###\s+(.+?)\s*\n+(.*?)(?=\n###\s|\Z)", body, re.S | re.M):
+              sections[m.group(1).strip().lower()] = m.group(2).strip()
+
+          question = sections.get("question", "").strip()
+          note = sections.get("note", "").strip()
+          if note.lower() in ("_no response_", "no response", "n/a", ""):
+              note = ""
+
+          if not question or len(question) < 8:
+              print(f"::error::No usable question found in issue #{os.environ['ISSUE_NUMBER']}")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+                  fh.write("ok=false\n")
+              sys.exit(1)
+          question = question[:400]
+          note = note[:600]
+
+          subprocess.run(
+              ["python", "cli.py", "submit", question] + (["--note", note] if note else []),
+              check=True,
+          )
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write("ok=true\n")
+              fh.write(f"question={question}\n")
+          PY
+
+      - name: Commit the updated queue
+        if: steps.queue.outputs.ok == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/submissions.json; then
+            echo "No change to data/submissions.json (already queued?)"
+            exit 0
+          fi
+          git add data/submissions.json
+          git commit -m "Queue question from #${{ github.event.issue.number }}"
+          git pull --rebase origin main
+          git push
+
+      - name: Confirm and close the issue
+        if: steps.queue.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body \
+            "Queued for the next editorial run — it will appear in the Reader-submitted section of the Gate #1 slate. Thanks!"
+          gh issue close "${{ github.event.issue.number }}" --reason completed
+
+      - name: Report a bad submission
+        if: failure() && steps.queue.outputs.ok != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body \
+            "Couldn't read a question from this issue. Please edit it so the **Question** field has a clear one-line debate (at least 8 characters), then re-add the \`submission\` label."

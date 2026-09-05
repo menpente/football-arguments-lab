@@ -68,6 +68,11 @@ section of the Gate #1 slate, unscored (the editorial-score formula assumes
 viral-engagement signal, which a submission has none of), for the editor to
 approve, refine, hold, or reject like any other candidate.
 
+Readers can also submit from the published site: the **Ask your own** panel
+on the index opens a pre-filled GitHub issue (`.github/ISSUE_TEMPLATE/submission.yml`),
+and `.github/workflows/submissions.yml` parses each `submission`-labelled
+issue, runs `cli.py submit`, commits the queue, and closes the issue.
+
 A successful run writes:
 
 - `output/runs/<slug>/` — the research brief, dataset, validation result,
