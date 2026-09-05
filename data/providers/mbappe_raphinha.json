@@ -1,0 +1,31 @@
+{
+  "provider": "Opta Analyst",
+  "competition": "La Liga",
+  "season": "2026/27",
+  "captured_at": "2026-09-05T00:00:00+00:00",
+  "source_url": "https://www.optaanalyst.com/la-liga/",
+  "players": {
+    "Mbappe": {
+      "apps": 3,
+      "minutes": 270,
+      "goals": 4,
+      "xg": 4.21,
+      "goals_minus_xg": -0.21,
+      "shots": 24,
+      "shots_on_target": 14,
+      "conversion": 16.67,
+      "xg_per_shot": 0.18
+    },
+    "Raphinha": {
+      "apps": 3,
+      "minutes": 229,
+      "goals": 5,
+      "xg": 4.10,
+      "goals_minus_xg": 0.90,
+      "shots": 10,
+      "shots_on_target": 7,
+      "conversion": 50.0,
+      "xg_per_shot": 0.41
+    }
+  }
+}

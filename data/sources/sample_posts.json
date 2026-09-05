@@ -1,0 +1,44 @@
+[
+  {
+    "url": "https://x.com/example/status/1001",
+    "platform": "x",
+    "author": "@footy_takes",
+    "text": "Mbappe has taken more shots this season than some entire teams. He shoots too much, it's selfish.",
+    "engagement": {"likes": 8400, "comments": 610, "shares": 1200}
+  },
+  {
+    "url": "https://x.com/example/status/1002",
+    "platform": "x",
+    "author": "@laligadata",
+    "text": "Mbappe: 24 shots, 4 goals. Raphinha: 10 shots, 5 goals. Volume vs efficiency, La Liga edition.",
+    "engagement": {"likes": 5200, "comments": 340, "shares": 890}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/abc123",
+    "platform": "reddit",
+    "author": "u/tacticsnerd",
+    "text": "Is Mbappe actually wasteful or just taking on a huge shot burden for Real Madrid? Someone has to shoot.",
+    "engagement": {"likes": 2100, "comments": 540, "shares": 0}
+  },
+  {
+    "url": "https://news.example.com/raphinha-hot-streak",
+    "platform": "news",
+    "author": "AS Sports Desk",
+    "text": "Raphinha is finishing like the best striker in the world right now, but is he just running hot?",
+    "engagement": {"likes": 300, "comments": 45, "shares": 60}
+  },
+  {
+    "url": "https://x.com/example/status/1003",
+    "platform": "x",
+    "author": "@midfield_maestro",
+    "text": "Is Pedri the most important player in La Liga? Barcelona look lost without him.",
+    "engagement": {"likes": 4300, "comments": 210, "shares": 400}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/def456",
+    "platform": "reddit",
+    "author": "u/statshead",
+    "text": "Pedri barely completes more passes per 90 than the average La Liga midfielder. Overrated?",
+    "engagement": {"likes": 1800, "comments": 260, "shares": 0}
+  }
+]

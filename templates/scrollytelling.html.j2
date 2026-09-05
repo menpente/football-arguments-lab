@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ story.title }}</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --fg: #17171a; --muted: #55565c; --card: #ffffff;
+    --accent: #2563eb; --border: #e5e5e2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121214; --fg: #f2f2f0; --muted: #a3a3a8; --card: #1c1c1f; --border: #2c2c30; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.55;
+  }
+  header.hero { padding: 4rem 1.5rem 3rem; max-width: 720px; margin: 0 auto; text-align: center; }
+  header.hero h1 { font-size: 2rem; margin-bottom: 0.75rem; }
+  header.hero p.dek { color: var(--muted); font-size: 1.1rem; }
+  main { max-width: 720px; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  section.scene {
+    padding: 2.5rem 0; border-top: 1px solid var(--border);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  section.scene.visible { opacity: 1; transform: translateY(0); }
+  section.scene .kind {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  section.scene h2 { font-size: 1.4rem; margin: 0 0 0.75rem; }
+  section.scene p { color: var(--fg); }
+  section.verdict { border-top: 2px solid var(--accent); }
+  .chart-wrap {
+    margin-top: 1.25rem; background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem;
+  }
+  svg.chart { width: 100%; height: auto; }
+  .chart-title { font-size: 12px; fill: var(--fg); font-weight: 600; }
+  .chart-value { font-size: 12px; fill: var(--fg); }
+  .chart-label { font-size: 12px; fill: var(--muted); }
+  .chart-axis { stroke: var(--border); stroke-width: 1; }
+  footer.sources {
+    max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border);
+  }
+  a.back-link {
+    display: block; max-width: 720px; margin: 1.5rem auto 0; padding: 0 1.5rem;
+    color: var(--accent); text-decoration: none; font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+<a class="back-link" href="../../">&larr; All stories</a>
+<header class="hero">
+  <h1>{{ story.title }}</h1>
+  <p class="dek">{{ story.dek }}</p>
+</header>
+<main>
+  {% for scene in story.scenes %}
+  <section class="scene {{ 'verdict' if scene.kind == 'verdict' else '' }}" data-scene="{{ scene.id }}">
+    <div class="kind">{{ scene.kind }}</div>
+    <h2>{{ scene.headline }}</h2>
+    <p>{{ scene.body }}</p>
+    {% if scene.chart %}
+    <div class="chart-wrap">{{ scene.chart_svg }}</div>
+    {% endif %}
+  </section>
+  {% endfor %}
+</main>
+<footer class="sources">
+  <p>Data sources:</p>
+  <ul>
+    {% for ds in story.data_sources %}
+    <li>{{ ds.provider }} — {{ ds.competition }} {{ ds.season }}, captured {{ ds.captured_at }}
+      (<a href="{{ ds.source_url }}">source</a>)</li>
+    {% endfor %}
+  </ul>
+</footer>
+<script>
+  const scenes = document.querySelectorAll("section.scene");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.15 });
+  scenes.forEach((s) => observer.observe(s));
+</script>
+</body>
+</html>
