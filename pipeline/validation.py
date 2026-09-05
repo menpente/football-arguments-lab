@@ -7,10 +7,12 @@ not re-derive football knowledge, just the invariants the spec lists.
 from __future__ import annotations
 
 from .models import Dataset, ValidationResult
+from .tracing import traced
 
 TOLERANCE = 0.5  # percentage-point / goal tolerance for rounded provider figures
 
 
+@traced(name="data_validation")
 def validate_dataset(dataset: Dataset, min_matches_for_confidence: int = 5) -> ValidationResult:
     errors: list[str] = []
     warnings: list[str] = []

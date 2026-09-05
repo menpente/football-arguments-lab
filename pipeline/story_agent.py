@@ -10,6 +10,7 @@ import re
 
 from .models import ChartSpec, Dataset, ResearchBrief, Scene, StorySpec
 from .reasoner import Reasoner
+from .tracing import traced
 
 
 def _slugify(text: str) -> str:
@@ -77,6 +78,7 @@ def _complication_summary(dataset: Dataset, subject: str, comparisons: list[str]
     return " ".join(notes) or "The sample is still too small to rule out variance."
 
 
+@traced(name="story_agent")
 def build_story_spec(brief: ResearchBrief, dataset: Dataset, subject: str,
                       reasoner: Reasoner) -> StorySpec:
     comparisons = brief.comparison_candidates

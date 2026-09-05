@@ -15,6 +15,7 @@ from pathlib import Path
 from .models import Candidate, Engagement, SourcePost
 from .reasoner import Reasoner, find_ambiguous_terms
 from .refiner import refine_question, viral_question
+from .tracing import traced
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -203,6 +204,7 @@ def _slugify(text: str) -> str:
     return text.strip("-")[:40]
 
 
+@traced(name="discovery")
 def run_discovery(reasoner: Reasoner, connectors: list[SourceConnector] | None = None,
                    limit: int = 10) -> list[Candidate]:
     """Full Discovery Agent pass: fetch -> cluster -> score -> rank."""

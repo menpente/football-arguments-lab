@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from .models import Dataset, ResearchBrief
+from .tracing import traced
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -61,6 +62,7 @@ def default_connector() -> ProviderConnector:
     )
 
 
+@traced(name="data_agent")
 def fetch_dataset(brief: ResearchBrief, subject: str, connector: ProviderConnector | None = None,
                    competition: str = "La Liga", season: str = "2026/27") -> Dataset:
     connector = connector or default_connector()

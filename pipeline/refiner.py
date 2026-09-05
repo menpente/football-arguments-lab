@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .reasoner import Reasoner
+from .tracing import traced
 
 
 @dataclass
@@ -111,6 +112,7 @@ def _suggest(raw_question: str, lead_post_text: str) -> tuple[str, str]:
     )
 
 
+@traced(name="question_refiner")
 def refine_question(raw_question: str, lead_post_text: str,
                     dimensions: list[str], reasoner: Reasoner) -> RefinedQuestion:
     suggested_question, suggested_rationale = _suggest(raw_question, lead_post_text)

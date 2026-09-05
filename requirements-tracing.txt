@@ -1,0 +1,3 @@
+# Optional: enables Opik tracing of the pipeline (see pipeline/tracing.py).
+# Install alongside requirements.txt and set OPIK_TRACING=1 to activate.
+opik>=1.7

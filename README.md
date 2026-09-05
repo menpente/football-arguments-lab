@@ -95,6 +95,27 @@ python -m unittest discover -s tests -v
 scripted mode (approve/refine/reject/kill paths) and checks that publishing
 only happens when both gates say yes.
 
+### Tracing (optional, Opik)
+
+The pipeline can emit an [Opik](https://www.comet.com/docs/opik/) trace per
+run — one span per stage, plus an `llm`-typed span around every `Reasoner`
+call (where a real model goes), with the Gate #1/#2 decisions attached as
+metadata. It is **opt-in and off by default**: without it, `opik` is never
+imported and the pipeline keeps its "runs offline, only needs Jinja2"
+promise.
+
+```bash
+pip install -r requirements-tracing.txt
+export OPIK_TRACING=1
+# plus Opik's own config for where traces go (Cloud or self-hosted):
+#   OPIK_API_KEY, OPIK_WORKSPACE          # Opik Cloud
+#   OPIK_URL_OVERRIDE=http://localhost:5173/api   # self-hosted
+python cli.py run --auto
+```
+
+Everything lives in `pipeline/tracing.py`; the stage functions just carry a
+`@traced` decorator that is a no-op when `OPIK_TRACING` is unset.
+
 ## What's real vs. mocked in this MVP
 
 Everything runs against **bundled fixture data** so the whole pipeline works

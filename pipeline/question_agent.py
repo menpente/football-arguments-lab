@@ -7,6 +7,7 @@ from __future__ import annotations
 from .discovery import KNOWN_PLAYERS
 from .models import Candidate, ResearchBrief
 from .reasoner import Reasoner, find_ambiguous_terms
+from .tracing import traced
 
 BASE_METRICS = {
     "shot volume": ["shots"],
@@ -24,6 +25,7 @@ BASE_METRICS = {
 STANDARD_CONFOUNDERS = ["penalties", "position", "minutes played", "small sample size"]
 
 
+@traced(name="question_agent")
 def build_research_brief(approved_question: str, candidate: Candidate,
                           reasoner: Reasoner) -> ResearchBrief:
     ambiguous_terms = find_ambiguous_terms(approved_question) or find_ambiguous_terms(candidate.question)

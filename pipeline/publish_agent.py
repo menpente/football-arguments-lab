@@ -22,6 +22,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .models import PublishResult, StorySpec
+from .tracing import traced
 
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent / "templates"
 
@@ -48,6 +49,7 @@ def _update_index(site_root: Path, story: StorySpec) -> None:
     (site_root / "index.html").write_text(template.render(stories=manifest))
 
 
+@traced(name="publish_agent")
 def publish(story: StorySpec, artifact_path: Path, site_root: Path,
             git_commit: bool = False) -> PublishResult:
     story_dir = site_root / "stories" / story.slug

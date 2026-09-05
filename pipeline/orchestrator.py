@@ -18,6 +18,7 @@ from .qa_agent import run_qa
 from .question_agent import build_research_brief
 from .reasoner import HeuristicReasoner, Reasoner
 from .story_agent import build_story_spec
+from .tracing import annotate, flush, traced
 from .validation import validate_dataset
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -36,6 +37,7 @@ def _dump(obj, path: Path) -> None:
     path.write_text(json.dumps(obj.to_dict() if hasattr(obj, "to_dict") else obj, indent=2, default=str))
 
 
+@traced(name="pipeline_run")
 def run_pipeline(
     reasoner: Optional[Reasoner] = None,
     connectors: Optional[list[SourceConnector]] = None,
@@ -44,6 +46,29 @@ def run_pipeline(
     site_root: Optional[Path] = None,
     scripted: Optional[ScriptedDecisions] = None,
     publish_commit: bool = False,
+) -> dict:
+    run_log = _run_pipeline(
+        reasoner, connectors, provider_connector, output_root,
+        site_root, scripted, publish_commit,
+    )
+    annotate(
+        outcome_stage=run_log.get("stage"),
+        published=len(run_log.get("published") or []),
+        blocked=len(run_log.get("blocked_candidates") or []),
+        held_or_killed=len(run_log.get("held_or_killed") or []),
+    )
+    flush()
+    return run_log
+
+
+def _run_pipeline(
+    reasoner: Optional[Reasoner],
+    connectors: Optional[list[SourceConnector]],
+    provider_connector: Optional[ProviderConnector],
+    output_root: Optional[Path],
+    site_root: Optional[Path],
+    scripted: Optional[ScriptedDecisions],
+    publish_commit: bool,
 ) -> dict:
     reasoner = reasoner or HeuristicReasoner()
     output_root = output_root or (REPO_ROOT / "output")
@@ -63,6 +88,7 @@ def run_pipeline(
     else:
         decisions = gates.run_gate1_interactive(candidates)
     run_log["gate1_decisions"] = [d.to_dict() for d in decisions]
+    annotate(gate1_decisions={d.candidate_id: d.action for d in decisions})
 
     approved: list[tuple[Candidate, GateDecision]] = [
         (c, d) for c, d in zip(candidates, decisions) if d.action in ("approve", "refine")
@@ -117,6 +143,7 @@ def run_pipeline(
         else:
             gate2 = gates.run_gate2_interactive(story.slug)
 
+        annotate(gate2=f"{story.slug}:{gate2.action}")
         if gate2.action != "approve":
             run_log.setdefault("held_or_killed", []).append(
                 {"slug": story.slug, "decision": gate2.to_dict()}

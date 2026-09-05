@@ -8,12 +8,14 @@ validation, and nothing reads as an empty placeholder.
 from __future__ import annotations
 
 from .models import QAReport, StorySpec, ValidationResult
+from .tracing import traced
 
 REQUIRED_SCENE_KINDS = {"hook", "refine", "operationalize", "evidence", "complication", "verdict"}
 MIN_HEADLINE_LEN = 3
 MIN_BODY_LEN = 20
 
 
+@traced(name="qa_agent")
 def run_qa(story: StorySpec, validation: ValidationResult) -> QAReport:
     checks: list[dict] = []
     errors: list[str] = []

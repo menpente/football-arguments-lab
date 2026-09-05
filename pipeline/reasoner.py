@@ -11,6 +11,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
+from .tracing import traced
+
 AMBIGUOUS_TERMS = [
     "best", "overrated", "underrated", "too much", "too little",
     "better than", "worse than", "finished", "goat", "most important",
@@ -55,8 +57,14 @@ def find_ambiguous_terms(text: str) -> list[str]:
 
 
 class HeuristicReasoner(Reasoner):
-    """Rule-based fallback. No network calls, fully deterministic."""
+    """Rule-based fallback. No network calls, fully deterministic.
 
+    The editorial-judgement methods are traced as ``llm`` spans: a real
+    reasoner swapped in here calls a model, and the Opik trace then shows
+    each prompt/response in place. See ``pipeline/tracing.py``.
+    """
+
+    @traced(name="reasoner.pitch_candidate", span_type="llm")
     def pitch_candidate(self, question: str, source_summary: str,
                          possible_dimensions: list[str]) -> dict:
         dims = ", ".join(possible_dimensions[:3]) or "the underlying numbers"
@@ -70,6 +78,7 @@ class HeuristicReasoner(Reasoner):
         )
         return {"pitch": pitch, "boring_risk": boring_risk}
 
+    @traced(name="reasoner.refine_question", span_type="llm")
     def refine_question(self, raw_question: str, lead_post_text: str,
                          dimensions: list[str], suggested_question: str,
                          suggested_rationale: str) -> dict:
@@ -77,6 +86,7 @@ class HeuristicReasoner(Reasoner):
         # deterministic reasoner takes it as-is.
         return {"question": suggested_question, "rationale": suggested_rationale}
 
+    @traced(name="reasoner.decompose_question", span_type="llm")
     def decompose_question(self, approved_question: str, original_claim: str,
                             possible_dimensions: list[str],
                             comparison_candidates: list[str]) -> dict:
@@ -96,6 +106,7 @@ class HeuristicReasoner(Reasoner):
             "strongest_possible_conclusion": strongest,
         }
 
+    @traced(name="reasoner.narrate_scene", span_type="llm")
     def narrate_scene(self, kind: str, context: dict) -> dict:
         templates = {
             "hook": (

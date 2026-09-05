@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .charts import render_bar_chart_svg
 from .models import StorySpec
+from .tracing import traced
 
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent / "templates"
 
@@ -41,6 +42,7 @@ def render_artifact(story: StorySpec) -> str:
     return template.render(story=_StoryView(story))
 
 
+@traced(name="artifact_agent")
 def write_artifact(story: StorySpec, output_dir: Path) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     html = render_artifact(story)
