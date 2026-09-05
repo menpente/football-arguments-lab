@@ -52,6 +52,8 @@ class Candidate:
     story_potential: float
     surprise_potential: float
     editorial_score: float = 0.0
+    # Question Refiner Agent: why better_question is sharper than `question`.
+    refinement_rationale: str = ""
 
     def to_dict(self) -> dict:
         d = asdict(self)

@@ -26,7 +26,17 @@ class Reasoner(ABC):
     @abstractmethod
     def pitch_candidate(self, question: str, source_summary: str,
                          possible_dimensions: list[str]) -> dict:
-        """Return {"pitch": str, "better_question": str, "boring_risk": str}."""
+        """Return {"pitch": str, "boring_risk": str}."""
+
+    @abstractmethod
+    def refine_question(self, raw_question: str, lead_post_text: str,
+                         dimensions: list[str], suggested_question: str,
+                         suggested_rationale: str) -> dict:
+        """Sharpen a viral claim into a testable question for Human Gate #1.
+
+        `suggested_*` are the deterministic seed from the claim type; return
+        {"question": str, "rationale": str} — accepting or improving them.
+        """
 
     @abstractmethod
     def decompose_question(self, approved_question: str, original_claim: str,
@@ -54,21 +64,18 @@ class HeuristicReasoner(Reasoner):
             f"A viral framing invites a verdict, but the richer story separates "
             f"{dims} instead of taking the headline claim at face value."
         )
-        # Fallback only: the caller (discovery.build_candidate) normally supplies
-        # a sharper question from the claim type and overrides this.
-        better_question = (
-            f"Which specific, measurable version of \"{question.rstrip('?')}\" "
-            f"does the data actually support?"
-        )
         boring_risk = (
             "The answer may simply confirm the base rate for this role or "
             "sample size, with no real complication to report."
         )
-        return {
-            "pitch": pitch,
-            "better_question": better_question,
-            "boring_risk": boring_risk,
-        }
+        return {"pitch": pitch, "boring_risk": boring_risk}
+
+    def refine_question(self, raw_question: str, lead_post_text: str,
+                         dimensions: list[str], suggested_question: str,
+                         suggested_rationale: str) -> dict:
+        # The claim-type seed is already a sound sharper question; the
+        # deterministic reasoner takes it as-is.
+        return {"question": suggested_question, "rationale": suggested_rationale}
 
     def decompose_question(self, approved_question: str, original_claim: str,
                             possible_dimensions: list[str],

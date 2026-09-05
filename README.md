@@ -17,6 +17,7 @@ and deployment mechanics, pausing at two gates for a person.
 | Spec section | Stage | Module |
 |---|---|---|
 | 4-6 | Discovery + Candidate Scoring | `pipeline/discovery.py` |
+| 6 | Question Refiner Agent (sharper question + rationale for Gate #1) | `pipeline/refiner.py` |
 | 7 | Human Gate #1 (approve/refine/hold/reject) | `pipeline/gates.py` |
 | 8 | Question Agent (research brief) | `pipeline/question_agent.py` |
 | 9 | Data/Research Agent | `pipeline/data_agent.py` |

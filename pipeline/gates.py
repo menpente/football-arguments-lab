@@ -20,6 +20,8 @@ def print_slate(candidates: list[Candidate]) -> None:
         print(f"    Source: {c.source_summary}")
         print(f"    Why now / pitch: {c.pitch}")
         print(f"    Suggested refined question: {c.better_question}")
+        if c.refinement_rationale:
+            print(f"      why: {c.refinement_rationale}")
         print(f"    Likely metrics: {', '.join(c.possible_dimensions)}")
         print(f"    Data feasibility: {c.data_feasibility}/10")
         print(f"    What could make it boring: {c.boring_risk}")
