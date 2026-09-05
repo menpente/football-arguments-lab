@@ -48,6 +48,41 @@ class TestQuestionRefiner(unittest.TestCase):
         self.assertTrue(out.question.strip())
         self.assertTrue(out.rationale.strip())
 
+    def test_brief_keeps_rationale_only_when_suggestion_is_accepted(self):
+        from pipeline.question_agent import build_research_brief
+
+        candidate = run_discovery(HeuristicReasoner())[0]
+        self.assertTrue(candidate.refinement_rationale)
+
+        accepted = build_research_brief(candidate.better_question, candidate, self.reasoner)
+        self.assertEqual(accepted.refinement_rationale, candidate.refinement_rationale)
+
+        overridden = build_research_brief(
+            "Is his shot count high once you adjust for minutes?", candidate, self.reasoner
+        )
+        self.assertEqual(overridden.refinement_rationale, "")
+
+    def test_published_story_shows_the_rationale_in_the_refine_scene(self):
+        import shutil
+        import tempfile
+        from pathlib import Path
+
+        from pipeline.orchestrator import ScriptedDecisions, run_pipeline
+
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            top = run_discovery(HeuristicReasoner())[0]
+            result = run_pipeline(
+                output_root=tmp,
+                scripted=ScriptedDecisions(
+                    gate1={top.id: {"action": "approve"}}, gate2_action="approve"
+                ),
+            )
+            html = Path(result["published"][0]["output_path"]).read_text()
+            self.assertIn(top.refinement_rationale, html)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
     def test_discovery_attaches_question_and_rationale_to_candidates(self):
         candidates = run_discovery(HeuristicReasoner())
         self.assertTrue(candidates)

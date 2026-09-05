@@ -86,6 +86,9 @@ class ResearchBrief:
     comparison_candidates: list[str]
     potential_confounders: list[str]
     strongest_possible_conclusion: str
+    # Question Refiner Agent rationale, carried through only when the editor
+    # accepted the suggested question at Gate #1 (empty if they wrote their own).
+    refinement_rationale: str = ""
 
     def to_dict(self) -> dict:
         return asdict(self)

@@ -107,7 +107,7 @@ class HeuristicReasoner(Reasoner):
             "refine": (
                 "A sharper question",
                 "\"{claim}\" is not testable as written. The workable version "
-                "is: {question}",
+                "is: {question}{rationale}",
             ),
             "operationalize": (
                 "What we actually measured",

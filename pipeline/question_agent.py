@@ -38,6 +38,11 @@ def build_research_brief(approved_question: str, candidate: Candidate,
 
     comparison_candidates = _infer_comparisons(candidate)
 
+    # Carry the refiner's rationale only if the editor accepted its suggestion;
+    # if they typed their own refined question, the rationale no longer fits.
+    accepted_suggestion = approved_question.strip() == candidate.better_question.strip()
+    refinement_rationale = candidate.refinement_rationale if accepted_suggestion else ""
+
     reasoned = reasoner.decompose_question(
         approved_question=approved_question,
         original_claim=candidate.question,
@@ -54,6 +59,7 @@ def build_research_brief(approved_question: str, candidate: Candidate,
         comparison_candidates=comparison_candidates,
         potential_confounders=STANDARD_CONFOUNDERS,
         strongest_possible_conclusion=reasoned["strongest_possible_conclusion"],
+        refinement_rationale=refinement_rationale,
     )
 
 

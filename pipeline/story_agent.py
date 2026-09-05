@@ -87,8 +87,12 @@ def build_story_spec(brief: ResearchBrief, dataset: Dataset, subject: str,
     hook = reasoner.narrate_scene("hook", {"claim": brief.original_claim})
     scenes.append(Scene(id="hook", kind="hook", headline=hook["headline"], body=hook["body"]))
 
+    rationale_clause = (
+        f" {brief.refinement_rationale}" if brief.refinement_rationale else ""
+    )
     refine = reasoner.narrate_scene(
-        "refine", {"claim": brief.original_claim, "question": brief.approved_question}
+        "refine", {"claim": brief.original_claim, "question": brief.approved_question,
+                   "rationale": rationale_clause}
     )
     scenes.append(Scene(id="refine", kind="refine", headline=refine["headline"], body=refine["body"]))
 
