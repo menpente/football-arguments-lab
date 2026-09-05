@@ -48,6 +48,28 @@
       "shots_on_target": 11,
       "conversion": 15.0,
       "xg_per_shot": 0.18
+    },
+    "Yamal": {
+      "apps": 3,
+      "minutes": 240,
+      "goals": 2,
+      "xg": 2.10,
+      "goals_minus_xg": -0.10,
+      "shots": 15,
+      "shots_on_target": 8,
+      "conversion": 13.33,
+      "xg_per_shot": 0.14
+    },
+    "Alvarez": {
+      "apps": 3,
+      "minutes": 250,
+      "goals": 5,
+      "xg": 3.90,
+      "goals_minus_xg": 1.10,
+      "shots": 16,
+      "shots_on_target": 10,
+      "conversion": 31.25,
+      "xg_per_shot": 0.24
     }
   }
 }

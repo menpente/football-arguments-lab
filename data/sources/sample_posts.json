@@ -68,5 +68,33 @@
     "author": "u/halamadrid",
     "text": "20 shots, 3 goals for Vinicius this season. The finishing has to improve if Madrid want the title.",
     "engagement": {"likes": 1900, "comments": 300, "shares": 40}
+  },
+  {
+    "url": "https://x.com/example/status/1006",
+    "platform": "x",
+    "author": "@barcacentre",
+    "text": "Lamine Yamal is massively overrated this season, 2 league goals and the hype has completely run away from reality.",
+    "engagement": {"likes": 3800, "comments": 320, "shares": 200}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/mno345",
+    "platform": "reddit",
+    "author": "u/cules",
+    "text": "Is Yamal overrated right now or just unlucky? 15 shots and only 2 have gone in.",
+    "engagement": {"likes": 2500, "comments": 340, "shares": 90}
+  },
+  {
+    "url": "https://x.com/example/status/1007",
+    "platform": "x",
+    "author": "@atletidata",
+    "text": "Alvarez is the most clinical finisher in La Liga right now, but is the sample just too small to trust?",
+    "engagement": {"likes": 3600, "comments": 260, "shares": 240}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/pqr678",
+    "platform": "reddit",
+    "author": "u/atleti",
+    "text": "Alvarez: 5 goals from 16 shots this season. Genuinely clinical, or a hot streak that regresses?",
+    "engagement": {"likes": 1800, "comments": 280, "shares": 50}
   }
 ]

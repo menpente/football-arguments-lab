@@ -28,7 +28,7 @@ THEME_KEYWORDS = [
 NUMERIC_HOOK = re.compile(r"\d")
 
 # crude entity list for the MVP clusterer; a real system would use NER.
-KNOWN_PLAYERS = ["Mbappe", "Raphinha", "Lewandowski", "Vinicius", "Pedri"]
+KNOWN_PLAYERS = ["Mbappe", "Raphinha", "Lewandowski", "Vinicius", "Yamal", "Alvarez", "Pedri"]
 
 
 class SourceConnector(ABC):
@@ -154,6 +154,8 @@ DIMENSION_LIBRARY = {
     "Raphinha": ["conversion", "xG", "xG per shot", "shot volume"],
     "Lewandowski": ["conversion", "xG", "xG per shot", "shot volume"],
     "Vinicius": ["shot volume", "conversion", "xG", "xG per shot"],
+    "Yamal": ["shot volume", "conversion", "xG", "xG per shot"],
+    "Alvarez": ["conversion", "xG", "xG per shot", "shot volume"],
     "Pedri": ["passes per 90", "progressive passes", "minutes played", "team dependency"],
 }
 
@@ -196,12 +198,14 @@ def _infer_claim_verb(text: str) -> str:
         return "waste too many good chances"
     if "finished" in lowered or "washed" in lowered or "done at this level" in lowered:
         return "still finish at an elite level"
-    if "shoot" in lowered or "shots" in lowered:
-        return "shoot too much"
     if "important" in lowered:
         return "matter as much as the hype suggests"
     if "overrated" in lowered:
         return "deserve the hype"
+    if "clinical" in lowered:
+        return "finish as clinically as the reputation says"
+    if "shoot" in lowered or "shots" in lowered:
+        return "shoot too much"
     if "finish" in lowered or "hot" in lowered:
         return "finish better than expected, or just run hot"
     return "live up to the claim"
