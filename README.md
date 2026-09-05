@@ -106,15 +106,24 @@ promise.
 
 ```bash
 pip install -r requirements-tracing.txt
+
+# Option A — local Opik via docker compose (needs Docker running):
+./scripts/opik-local.sh up          # downloads Opik's stack into .opik/, starts it
 export OPIK_TRACING=1
-# plus Opik's own config for where traces go (Cloud or self-hosted):
-#   OPIK_API_KEY, OPIK_WORKSPACE          # Opik Cloud
-#   OPIK_URL_OVERRIDE=http://localhost:5173/api   # self-hosted
+export OPIK_URL_OVERRIDE=http://localhost:5173/api
+python cli.py run --auto            # trace shows at http://localhost:5173
+./scripts/opik-local.sh down        # stop it (nuke also drops the data volumes)
+
+# Option B — Opik Cloud:
+export OPIK_TRACING=1 OPIK_API_KEY=... OPIK_WORKSPACE=...
 python cli.py run --auto
 ```
 
-Everything lives in `pipeline/tracing.py`; the stage functions just carry a
-`@traced` decorator that is a no-op when `OPIK_TRACING` is unset.
+`scripts/opik-local.sh` pins Opik's own `docker compose` stack (version in
+the script) and runs it under the `opik` profile — this repo doesn't vendor
+it. Everything on our side lives in `pipeline/tracing.py`; the stage
+functions just carry a `@traced` decorator that is a no-op when
+`OPIK_TRACING` is unset.
 
 ## What's real vs. mocked in this MVP
 
