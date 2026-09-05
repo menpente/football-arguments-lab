@@ -15,15 +15,24 @@ GATE2_ACTIONS = {"approve", "revise", "kill"}
 
 def print_slate(candidates: list[Candidate]) -> None:
     print("\n=== Editorial slate (Human Gate #1) ===")
+    reader_section_started = False
     for i, c in enumerate(candidates, 1):
-        print(f"\n[{i}] {c.question}  (editorial_score={c.editorial_score})")
+        if c.reader_submitted and not reader_section_started:
+            print("\n--- Reader-submitted (unscored) ---")
+            reader_section_started = True
+        if c.reader_submitted:
+            print(f"\n[{i}] {c.question}")
+        else:
+            print(f"\n[{i}] {c.question}  (editorial_score={c.editorial_score})")
         print(f"    Source: {c.source_summary}")
         print(f"    Why now / pitch: {c.pitch}")
         print(f"    Suggested refined question: {c.better_question}")
         if c.refinement_rationale:
             print(f"      why: {c.refinement_rationale}")
-        print(f"    Likely metrics: {', '.join(c.possible_dimensions)}")
-        print(f"    Data feasibility: {c.data_feasibility}/10")
+        if c.possible_dimensions:
+            print(f"    Likely metrics: {', '.join(c.possible_dimensions)}")
+        if not c.reader_submitted:
+            print(f"    Data feasibility: {c.data_feasibility}/10")
         print(f"    What could make it boring: {c.boring_risk}")
 
 

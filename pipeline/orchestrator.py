@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from . import gates
+from . import gates, submissions
 from .artifact_agent import write_artifact
 from .data_agent import ProviderConnector, fetch_dataset
 from .discovery import SourceConnector, run_discovery
@@ -37,6 +37,16 @@ def _dump(obj, path: Path) -> None:
     path.write_text(json.dumps(obj.to_dict() if hasattr(obj, "to_dict") else obj, indent=2, default=str))
 
 
+def _published_slugs(site_root: Path) -> set[str]:
+    manifest = site_root / "manifest.json"
+    if not manifest.exists():
+        return set()
+    try:
+        return {entry["slug"] for entry in json.loads(manifest.read_text())}
+    except (ValueError, KeyError):
+        return set()
+
+
 @traced(name="pipeline_run")
 def run_pipeline(
     reasoner: Optional[Reasoner] = None,
@@ -46,10 +56,11 @@ def run_pipeline(
     site_root: Optional[Path] = None,
     scripted: Optional[ScriptedDecisions] = None,
     publish_commit: bool = False,
+    submissions_path: Optional[Path] = None,
 ) -> dict:
     run_log = _run_pipeline(
         reasoner, connectors, provider_connector, output_root,
-        site_root, scripted, publish_commit,
+        site_root, scripted, publish_commit, submissions_path,
     )
     annotate(
         outcome_stage=run_log.get("stage"),
@@ -69,6 +80,7 @@ def _run_pipeline(
     site_root: Optional[Path],
     scripted: Optional[ScriptedDecisions],
     publish_commit: bool,
+    submissions_path: Optional[Path],
 ) -> dict:
     reasoner = reasoner or HeuristicReasoner()
     output_root = output_root or (REPO_ROOT / "output")
@@ -77,6 +89,14 @@ def _run_pipeline(
 
     # 1-2. Discovery + Candidate Scoring
     candidates = run_discovery(reasoner, connectors=connectors)
+
+    # Reader-submitted questions join the slate below the scored ones, unscored.
+    published_slugs = _published_slugs(site_root)
+    submitted = submissions.to_candidates(
+        submissions.load_submissions(submissions_path), reasoner, published_slugs
+    )
+    candidates = candidates + submitted
+
     run_log["candidates"] = [c.to_dict() for c in candidates]
     if not candidates:
         run_log["stage"] = "stopped_no_candidates"

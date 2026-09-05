@@ -17,6 +17,7 @@ and deployment mechanics, pausing at two gates for a person.
 | Spec section | Stage | Module |
 |---|---|---|
 | 4-6 | Discovery + Candidate Scoring | `pipeline/discovery.py` |
+| 5 | Reader-submitted questions (`cli.py submit`) | `pipeline/submissions.py` |
 | 6 | Question Refiner Agent (sharper question + rationale for Gate #1) | `pipeline/refiner.py` |
 | 7 | Human Gate #1 (approve/refine/hold/reject) | `pipeline/gates.py` |
 | 8 | Question Agent (research brief) | `pipeline/question_agent.py` |
@@ -50,6 +51,22 @@ python cli.py run --auto --commit
 python scripts/seed_demo_stories.py            # dry run, writes site/ only
 python scripts/seed_demo_stories.py -n 3 --commit
 ```
+
+### Reader-submitted questions
+
+Discovery finds questions by clustering viral posts. A reader or editor can
+also propose one directly:
+
+```bash
+python cli.py submit "Is Raphinha overperforming his xG by an unsustainable margin?"
+python cli.py submissions list
+```
+
+Submissions are appended to `data/submissions.json` (git is the store — no
+DB). On the next `cli.py run` they appear in their own **Reader-submitted**
+section of the Gate #1 slate, unscored (the editorial-score formula assumes
+viral-engagement signal, which a submission has none of), for the editor to
+approve, refine, hold, or reject like any other candidate.
 
 A successful run writes:
 

@@ -54,10 +54,27 @@ class Candidate:
     editorial_score: float = 0.0
     # Question Refiner Agent: why better_question is sharper than `question`.
     refinement_rationale: str = ""
+    # True when the question came from a reader via `cli.py submit`, not from
+    # the Discovery Agent clustering viral posts.
+    reader_submitted: bool = False
 
     def to_dict(self) -> dict:
         d = asdict(self)
         return d
+
+
+@dataclass
+class Submission:
+    """A reader-submitted question awaiting an editor's look at Gate #1."""
+
+    id: str
+    question: str
+    note: str = ""
+    submitted_at: str = field(default_factory=_now_iso)
+    status: str = "new"  # "new" | "archived"
+
+    def to_dict(self) -> dict:
+        return asdict(self)
 
 
 @dataclass

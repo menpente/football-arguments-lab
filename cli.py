@@ -5,6 +5,8 @@
     python cli.py run --auto          # scripted demo run, no prompts
     python cli.py run --auto --commit # scripted demo run + local git commit,
                                        # ready to push and deploy via GitHub Pages
+    python cli.py submit "Is Rodri irreplaceable for City?"   # queue a question
+    python cli.py submissions list                            # show the queue
 """
 from __future__ import annotations
 
@@ -14,6 +16,7 @@ import sys
 from pathlib import Path
 
 from pipeline.orchestrator import ScriptedDecisions, run_pipeline
+from pipeline.submissions import add_submission, load_submissions
 
 REPO_ROOT = Path(__file__).resolve().parent
 
@@ -36,7 +39,33 @@ def main() -> int:
                              "(git-tracked; this is what .github/workflows/pages.yml "
                              "deploys to GitHub Pages).")
 
+    submit_p = sub.add_parser("submit", help="Queue a reader-submitted question")
+    submit_p.add_argument("question", help="The question, in quotes")
+    submit_p.add_argument("--note", default="", help="Optional context for the editor")
+
+    subs_p = sub.add_parser("submissions", help="Inspect the submission queue")
+    subs_p.add_argument("action", choices=["list"], nargs="?", default="list")
+
     args = parser.parse_args()
+
+    if args.command == "submit":
+        s = add_submission(args.question, note=args.note)
+        print(f"Queued {s.id}: {s.question}")
+        print("It will appear in the Reader-submitted section of the next "
+              "`cli.py run` slate.")
+        return 0
+
+    if args.command == "submissions":
+        subs = load_submissions()
+        new = [s for s in subs if s.status == "new"]
+        if not new:
+            print("No pending submissions.")
+            return 0
+        for s in new:
+            print(f"{s.id}  {s.submitted_at[:10]}  {s.question}")
+            if s.note:
+                print(f"          note: {s.note}")
+        return 0
 
     if args.command == "run":
         scripted = None
