@@ -6,6 +6,8 @@ editor pick and refine one, research and validate the data, generate a
 scrollytelling artifact, run automated QA, get final human sign-off, and
 publish.
 
+**Published site:** https://menpente.github.io/football-arguments-lab/
+
 The human editor still owns question selection, framing, and publish
 approval — the pipeline only automates discovery, research, drafting, QA,
 and deployment mechanics, pausing at two gates for a person.
