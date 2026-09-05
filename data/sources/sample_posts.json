@@ -40,5 +40,33 @@
     "author": "u/statshead",
     "text": "Pedri barely completes more passes per 90 than the average La Liga midfielder. Overrated?",
     "engagement": {"likes": 1800, "comments": 260, "shares": 0}
+  },
+  {
+    "url": "https://x.com/example/status/1004",
+    "platform": "x",
+    "author": "@barcacentre",
+    "text": "Lewandowski looks finished at this level: 18 shots, 6 goals, and Barcelona still lean on him every single week.",
+    "engagement": {"likes": 3900, "comments": 300, "shares": 250}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/ghi789",
+    "platform": "reddit",
+    "author": "u/cules",
+    "text": "Is Lewandowski actually finished, or is 6 goals in 3 games still elite? Vinicius has 20 shots for 3 goals over the same run.",
+    "engagement": {"likes": 2600, "comments": 380, "shares": 120}
+  },
+  {
+    "url": "https://x.com/example/status/1005",
+    "platform": "x",
+    "author": "@realmadridinfo",
+    "text": "Vinicius has taken 20 shots for just 3 goals. Wasteful in front of goal, or carrying a huge shot burden?",
+    "engagement": {"likes": 4100, "comments": 260, "shares": 300}
+  },
+  {
+    "url": "https://reddit.com/r/soccer/comments/jkl012",
+    "platform": "reddit",
+    "author": "u/halamadrid",
+    "text": "20 shots, 3 goals for Vinicius this season. The finishing has to improve if Madrid want the title.",
+    "engagement": {"likes": 1900, "comments": 300, "shares": 40}
   }
 ]

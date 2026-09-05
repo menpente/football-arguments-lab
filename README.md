@@ -44,6 +44,10 @@ python cli.py run --auto
 
 # Same, plus a local git commit of the published artifact
 python cli.py run --auto --commit
+
+# Populate the demo site with the top few candidates in one pass
+python scripts/seed_demo_stories.py            # dry run, writes site/ only
+python scripts/seed_demo_stories.py -n 3 --commit
 ```
 
 A successful run writes:
@@ -99,9 +103,10 @@ offline with no API keys:
   Reddit, and news search. `pipeline/discovery.SourceConnector` is the
   interface — swap `JsonFixtureConnector` for a real one (tweepy for X, praw
   for Reddit, a news search API) without touching clustering or scoring.
-- **Stats provider** (`data/providers/mbappe_raphinha.json`): stands in for
-  Opta Analyst, matching the worked example in the spec (Mbappé vs.
-  Raphinha, La Liga 2026/27). `pipeline/data_agent.ProviderConnector` is the
+- **Stats provider** (`data/providers/la_liga_forwards.json`): stands in for
+  Opta Analyst, covering the worked example in the spec (Mbappé vs. Raphinha,
+  La Liga 2026/27) plus a couple more forwards for extra demo stories.
+  `pipeline/data_agent.ProviderConnector` is the
   interface; the "one provider per story" rule (section 9) is enforced by
   construction — a story run takes exactly one connector, so nothing
   downstream can blend sources.

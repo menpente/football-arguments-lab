@@ -57,7 +57,7 @@ class JsonFixtureProviderConnector(ProviderConnector):
 
 def default_connector() -> ProviderConnector:
     return JsonFixtureProviderConnector(
-        "Opta Analyst", DATA_DIR / "providers" / "mbappe_raphinha.json"
+        "Opta Analyst", DATA_DIR / "providers" / "la_liga_forwards.json"
     )
 
 

@@ -26,6 +26,28 @@
       "shots_on_target": 7,
       "conversion": 50.0,
       "xg_per_shot": 0.41
+    },
+    "Lewandowski": {
+      "apps": 3,
+      "minutes": 261,
+      "goals": 6,
+      "xg": 5.40,
+      "goals_minus_xg": 0.60,
+      "shots": 18,
+      "shots_on_target": 12,
+      "conversion": 33.33,
+      "xg_per_shot": 0.30
+    },
+    "Vinicius": {
+      "apps": 3,
+      "minutes": 255,
+      "goals": 3,
+      "xg": 3.60,
+      "goals_minus_xg": -0.60,
+      "shots": 20,
+      "shots_on_target": 11,
+      "conversion": 15.0,
+      "xg_per_shot": 0.18
     }
   }
 }

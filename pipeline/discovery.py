@@ -28,7 +28,7 @@ THEME_KEYWORDS = [
 NUMERIC_HOOK = re.compile(r"\d")
 
 # crude entity list for the MVP clusterer; a real system would use NER.
-KNOWN_PLAYERS = ["Mbappe", "Raphinha", "Pedri"]
+KNOWN_PLAYERS = ["Mbappe", "Raphinha", "Lewandowski", "Vinicius", "Pedri"]
 
 
 class SourceConnector(ABC):
@@ -152,6 +152,8 @@ def editorial_score(social_signal: float, question_quality: float,
 DIMENSION_LIBRARY = {
     "Mbappe": ["shot volume", "conversion", "xG", "xG per shot", "team shot share"],
     "Raphinha": ["conversion", "xG", "xG per shot", "shot volume"],
+    "Lewandowski": ["conversion", "xG", "xG per shot", "shot volume"],
+    "Vinicius": ["shot volume", "conversion", "xG", "xG per shot"],
     "Pedri": ["passes per 90", "progressive passes", "minutes played", "team dependency"],
 }
 
@@ -190,6 +192,10 @@ def build_candidate(player: str, posts: list[SourcePost], reasoner: Reasoner) ->
 
 def _infer_claim_verb(text: str) -> str:
     lowered = text.lower()
+    if "wasteful" in lowered or "waste" in lowered:
+        return "waste too many good chances"
+    if "finished" in lowered or "washed" in lowered or "done at this level" in lowered:
+        return "still finish at an elite level"
     if "shoot" in lowered or "shots" in lowered:
         return "shoot too much"
     if "important" in lowered:
