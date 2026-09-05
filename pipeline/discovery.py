@@ -162,7 +162,12 @@ DIMENSION_LIBRARY = {
 
 def build_candidate(player: str, posts: list[SourcePost], reasoner: Reasoner) -> Candidate:
     lead_post = max(posts, key=lambda p: p.engagement.likes)
-    question = f"Does {player} {_infer_claim_verb(lead_post.text)}?"
+    claim_verb, sharper_template = _infer_claim(lead_post.text)
+    question = f"Does {player} {claim_verb}?"
+    # The viral claim is a vague verdict; the sharper question is the specific,
+    # measurable thing the story will actually test. A real LLM reasoner can
+    # improve on this; the heuristic seed comes from the claim type.
+    sharper_question = sharper_template.format(player=player)
     dims = DIMENSION_LIBRARY.get(player, ["shot volume", "conversion"])
     pitch_fields = reasoner.pitch_candidate(question, lead_post.text, dims)
 
@@ -179,7 +184,7 @@ def build_candidate(player: str, posts: list[SourcePost], reasoner: Reasoner) ->
         source_posts=posts,
         source_summary=f"Viral debate about {player} clustered from {len(posts)} posts.",
         pitch=pitch_fields["pitch"],
-        better_question=pitch_fields["better_question"],
+        better_question=sharper_question or pitch_fields["better_question"],
         possible_dimensions=dims,
         boring_risk=pitch_fields["boring_risk"],
         social_signal=social,
@@ -192,23 +197,52 @@ def build_candidate(player: str, posts: list[SourcePost], reasoner: Reasoner) ->
     return candidate
 
 
-def _infer_claim_verb(text: str) -> str:
+# Each entry: (trigger keywords, the vague viral claim, the sharper testable
+# question). `{player}` is filled in per candidate. Order matters — the first
+# match wins, so specific claims sit above the generic "shoots too much".
+CLAIM_TYPES: list[tuple[tuple[str, ...], str, str]] = [
+    (("wasteful", "waste"),
+     "waste too many good chances",
+     "Is {player} scoring fewer goals than his xG by a margin bigger than "
+     "a normal cold streak?"),
+    (("finished", "washed", "done at this level"),
+     "still finish at an elite level",
+     "Has {player}'s conversion and xG-per-shot actually dropped from his "
+     "established level, or is this just a short-sample dip?"),
+    (("important",),
+     "matter as much as the hype suggests",
+     "Do {player}'s team's underlying numbers change when he is on the pitch?"),
+    (("overrated",),
+     "deserve the hype",
+     "Do {player}'s shot volume, xG and conversion this season match his "
+     "reputation?"),
+    (("clinical",),
+     "finish as clinically as the reputation says",
+     "Is {player}'s conversion rate running ahead of his xG by an amount "
+     "that usually regresses?"),
+    (("shoot", "shots"),
+     "shoot too much",
+     "Is {player} taking an unusually large share of his team's shots for "
+     "his role?"),
+    (("finish", "hot"),
+     "finish better than expected, or just run hot",
+     "Is {player}'s goals-minus-xG gap big enough to be a real finishing "
+     "edge rather than variance?"),
+]
+
+DEFAULT_CLAIM: tuple[str, str] = (
+    "live up to the claim",
+    "Which specific, measurable version of this claim does the data support?",
+)
+
+
+def _infer_claim(text: str) -> tuple[str, str]:
+    """Map a viral post to (vague claim verb, sharper testable question)."""
     lowered = text.lower()
-    if "wasteful" in lowered or "waste" in lowered:
-        return "waste too many good chances"
-    if "finished" in lowered or "washed" in lowered or "done at this level" in lowered:
-        return "still finish at an elite level"
-    if "important" in lowered:
-        return "matter as much as the hype suggests"
-    if "overrated" in lowered:
-        return "deserve the hype"
-    if "clinical" in lowered:
-        return "finish as clinically as the reputation says"
-    if "shoot" in lowered or "shots" in lowered:
-        return "shoot too much"
-    if "finish" in lowered or "hot" in lowered:
-        return "finish better than expected, or just run hot"
-    return "live up to the claim"
+    for keywords, claim_verb, sharper in CLAIM_TYPES:
+        if any(k in lowered for k in keywords):
+            return claim_verb, sharper
+    return DEFAULT_CLAIM
 
 
 def _slugify(text: str) -> str:

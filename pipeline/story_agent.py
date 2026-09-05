@@ -13,8 +13,14 @@ from .reasoner import Reasoner
 
 
 def _slugify(text: str) -> str:
-    text = text.lower().strip("?")
-    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")[:60]
+    text = text.lower().replace("'", "")
+    words = re.sub(r"[^a-z0-9]+", "-", text).strip("-").split("-")
+    slug = ""
+    for word in words:
+        if slug and len(slug) + 1 + len(word) > 60:
+            break
+        slug = f"{slug}-{word}" if slug else word
+    return slug or "story"
 
 
 def _metric_chart(dataset: Dataset, metric: str, title: str, unit: str) -> ChartSpec | None:
@@ -74,7 +80,7 @@ def _complication_summary(dataset: Dataset, subject: str, comparisons: list[str]
 def build_story_spec(brief: ResearchBrief, dataset: Dataset, subject: str,
                       reasoner: Reasoner) -> StorySpec:
     comparisons = brief.comparison_candidates
-    slug = _slugify(brief.approved_question)
+    slug = _slugify(brief.original_claim)
 
     scenes: list[Scene] = []
 
@@ -124,8 +130,10 @@ def build_story_spec(brief: ResearchBrief, dataset: Dataset, subject: str,
     )
     scenes.append(Scene(id="verdict", kind="verdict", headline=verdict["headline"], body=verdict["body"]))
 
-    title = brief.approved_question
-    dek = f"What the data says about \"{brief.original_claim}\""
+    # The headline is the viral claim (the hook); the dek is the sharper,
+    # testable question the story actually answers.
+    title = brief.original_claim
+    dek = brief.approved_question
 
     return StorySpec(
         slug=slug,

@@ -50,20 +50,16 @@ class HeuristicReasoner(Reasoner):
     def pitch_candidate(self, question: str, source_summary: str,
                          possible_dimensions: list[str]) -> dict:
         dims = ", ".join(possible_dimensions[:3]) or "the underlying numbers"
-        terms = find_ambiguous_terms(question)
         pitch = (
             f"A viral framing invites a verdict, but the richer story separates "
             f"{dims} instead of taking the headline claim at face value."
         )
-        if terms:
-            better_question = question
-            for t in terms:
-                if t in ("too much", "too little"):
-                    better_question = better_question.replace(
-                        t, "an unusual amount of"
-                    )
-        else:
-            better_question = question
+        # Fallback only: the caller (discovery.build_candidate) normally supplies
+        # a sharper question from the claim type and overrides this.
+        better_question = (
+            f"Which specific, measurable version of \"{question.rstrip('?')}\" "
+            f"does the data actually support?"
+        )
         boring_risk = (
             "The answer may simply confirm the base rate for this role or "
             "sample size, with no real complication to report."
