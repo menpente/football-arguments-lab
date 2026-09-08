@@ -2,8 +2,9 @@
 
 Writes the finished artifact into `site_root`, a directory shaped exactly
 like the GitHub Pages source a `.github/workflows/pages.yml` workflow
-publishes (see that file): `site/index.html` lists every published story,
-and `site/stories/<slug>/index.html` is the story itself. `site_root` is
+publishes (see that file): `site/stories/index.html` lists every published
+story and `site/stories/<slug>/index.html` is the story itself (`site/`
+root is the debates app). `site_root` is
 git-tracked (unlike `output/`, which only holds ephemeral run logs) because
 the committed content *is* the deploy artifact — Pages serves whatever is
 on the branch.

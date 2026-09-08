@@ -12,6 +12,23 @@ The human editor still owns question selection, framing, and publish
 approval — the pipeline only automates discovery, research, drafting, QA,
 and deployment mechanics, pausing at two gates for a person.
 
+## Two products
+
+- **Debates** (`/`) — an interactive A-vs-B argument tool: pick a side,
+  commit a confidence level, weight the criteria that matter to you, walk
+  the evidence scene by scene, and get a verdict that reacts to your
+  weighting. Data is hand-authored in `data/debates.json`; `cli.py debates
+  publish` validates it and writes `site/index.html` + `site/debates.json`.
+
+  ```bash
+  python cli.py debates validate     # check data/debates.json
+  python cli.py debates publish      # write the app + data into site/
+  ```
+
+- **Stories** (`/stories/`) — the pipeline output below: viral-debate
+  questions taken through discovery, the two human gates, and rendered as
+  scrollytelling. Built by `cli.py run` / `scripts/seed_demo_stories.py`.
+
 ## Pipeline stages -> code
 
 | Spec section | Stage | Module |
@@ -82,8 +99,9 @@ A successful run writes:
 - `site/stories/<slug>/index.html` — the published scrollytelling artifact
   (self-contained: inline SVG charts, no external JS/CSS dependency, dark-mode
   aware). Open it directly in a browser.
-- `site/index.html` — an index of every published story, regenerated from
-  `site/manifest.json` on each publish.
+- `site/stories/index.html` — an index of every published story,
+  regenerated from `site/stories/manifest.json` on each publish. (`/`
+  itself is the debates app — see "Two products" above.)
 
 `site/` is **git-tracked** (unlike `output/`) — it's the actual GitHub Pages
 deploy source. Use separate paths with `--output`/`--site` (or the
