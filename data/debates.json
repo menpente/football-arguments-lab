@@ -1,0 +1,503 @@
+[
+  {
+    "id": "messi-ronaldo",
+    "tag": "GOAT debate",
+    "title": "Messi vs Ronaldo",
+    "q": "Who is the best player in the world?",
+    "a": "Lionel Messi",
+    "b": "Cristiano Ronaldo",
+    "teaser": "Scoring, creation and longevity pull the answer in different directions.",
+    "criteria": [
+      [
+        "scoring",
+        "Scoring",
+        80,
+        [
+          96,
+          100
+        ]
+      ],
+      [
+        "creation",
+        "Creation",
+        70,
+        [
+          100,
+          82
+        ]
+      ],
+      [
+        "longevity",
+        "Longevity",
+        50,
+        [
+          88,
+          100
+        ]
+      ],
+      [
+        "peak",
+        "Individual peak",
+        60,
+        [
+          100,
+          63
+        ]
+      ]
+    ],
+    "scenes": [
+      [
+        "Start with totals",
+        "Ronaldo leads the raw goal total.",
+        "Career goals",
+        927,
+        978,
+        "club + country",
+        "A total is rate \u00d7 opportunity."
+      ],
+      [
+        "Change the denominator",
+        "Messi scores more often per appearance.",
+        "Goals per game",
+        0.79,
+        0.73,
+        "career",
+        "The winner flips when volume becomes efficiency."
+      ],
+      [
+        "Add creation",
+        "Messi has more total goal contributions.",
+        "Goal contributions",
+        1348,
+        1239,
+        "goals + assists",
+        "Finishing and creating are different definitions of attacking value."
+      ],
+      [
+        "Reward staying power",
+        "Ronaldo has played far more senior matches.",
+        "Career appearances",
+        1171,
+        1333,
+        "club + country",
+        "Longevity is not noise. It is a value judgment."
+      ]
+    ],
+    "sources": [
+      [
+        "MessiVsRonaldo.app",
+        "https://www.messivsronaldo.app/"
+      ],
+      [
+        "Reuters \u2014 Messi international retirement, 2026",
+        "https://www.reuters.com/sports/soccer/messi-announces-departure-argentina-national-team-2026-08-31/"
+      ]
+    ]
+  },
+  {
+    "id": "guardiola-luis-enrique",
+    "tag": "Managers",
+    "title": "Guardiola vs Luis Enrique",
+    "q": "Who is the best coach in the world?",
+    "a": "Pep Guardiola",
+    "b": "Luis Enrique",
+    "teaser": "Career dominance versus peak-team dominance \u2014 the argument that started the project.",
+    "criteria": [
+      [
+        "league",
+        "League machine",
+        75,
+        [
+          100,
+          94
+        ]
+      ],
+      [
+        "peak",
+        "Peak domination",
+        75,
+        [
+          89,
+          100
+        ]
+      ],
+      [
+        "europe",
+        "Europe",
+        70,
+        [
+          98,
+          100
+        ]
+      ],
+      [
+        "dynasty",
+        "Dynasty",
+        60,
+        [
+          100,
+          78
+        ]
+      ]
+    ],
+    "scenes": [
+      [
+        "Career question",
+        "If the question is the whole career, Pep starts ahead.",
+        "Peak league PPG",
+        2.63,
+        2.47,
+        "selected peak seasons",
+        "Career greatness and peak-team greatness are different questions."
+      ],
+      [
+        "Peak-team question",
+        "Luis Enrique's 2014/15 Bar\u00e7a wins the raw domination metric.",
+        "Peak GD per game",
+        2.08,
+        2.34,
+        "league",
+        "Once we ask about a single peak team, the gap nearly disappears."
+      ],
+      [
+        "Europe",
+        "Champions League efficiency is almost a draw.",
+        "UCL win rate",
+        61.9,
+        63.3,
+        "%",
+        "Win rate alone does not make Pep clearly superior in Europe."
+      ],
+      [
+        "Tactical distinction",
+        "Pep reduces variance. Luis Enrique accepts payoff.",
+        "Peak possession",
+        71.9,
+        68.2,
+        "%",
+        "The useful answer may be a tactical distinction, not a ranking."
+      ]
+    ],
+    "sources": [
+      [
+        "Premier League \u2014 City 2017/18",
+        "https://www.premierleague.com/en/tables/premier-league/2017-18"
+      ],
+      [
+        "PSG \u2014 2024/25 review",
+        "https://www.psg.fr/en/content/a-look-back-at-2024-2025-a-dream-season-in-ligue-1-psg-paris-saint-germain"
+      ],
+      [
+        "UEFA",
+        "https://www.uefa.com/uefachampionsleague/history/"
+      ]
+    ]
+  },
+  {
+    "id": "xavi-iniesta",
+    "tag": "Midfield war",
+    "title": "Xavi vs Iniesta",
+    "q": "Who was the better midfielder?",
+    "a": "Xavi Hern\u00e1ndez",
+    "b": "Andr\u00e9s Iniesta",
+    "teaser": "Control, longevity, honours and decisive moments make this a role-definition problem.",
+    "criteria": [
+      [
+        "longevity",
+        "Bar\u00e7a longevity",
+        55,
+        [
+          100,
+          88
+        ]
+      ],
+      [
+        "honours",
+        "Club honours",
+        55,
+        [
+          78,
+          100
+        ]
+      ],
+      [
+        "spain",
+        "Spain career",
+        60,
+        [
+          98,
+          100
+        ]
+      ],
+      [
+        "moments",
+        "Decisive moments",
+        65,
+        [
+          82,
+          100
+        ]
+      ]
+    ],
+    "scenes": [
+      [
+        "Start with longevity",
+        "Xavi played more official matches for Bar\u00e7a.",
+        "Barcelona appearances",
+        767,
+        674,
+        "official first-team",
+        "Availability and control are forms of value."
+      ],
+      [
+        "Count silverware",
+        "Iniesta finished with more Barcelona trophies.",
+        "Barcelona trophies",
+        25,
+        32,
+        "major honours",
+        "Team trophies are evidence \u2014 but not clean individual attribution."
+      ],
+      [
+        "International careers",
+        "Their Spain records are remarkably close.",
+        "Spain caps",
+        133,
+        131,
+        "senior",
+        "Sometimes the data refuses to create separation."
+      ],
+      [
+        "The moment problem",
+        "Then there is the World Cup final.",
+        "Spain goals",
+        12,
+        14,
+        "senior",
+        "Not everything meaningful should be compressed into one number."
+      ]
+    ],
+    "sources": [
+      [
+        "FC Barcelona \u2014 Xavi",
+        "https://www.fcbarcelona.com/en/football/barca-legends/players/4231987/xavi"
+      ],
+      [
+        "FC Barcelona \u2014 Iniesta",
+        "https://www.fcbarcelona.es/es/futbol/barca-legends/jugadores/4231989/iniesta"
+      ]
+    ]
+  },
+  {
+    "id": "barca-2011-madrid-2017",
+    "tag": "Best team ever?",
+    "title": "Bar\u00e7a 2011 vs Madrid 2017",
+    "q": "Which was the better team?",
+    "a": "Barcelona 2010/11",
+    "b": "Real Madrid 2016/17",
+    "teaser": "Control versus firepower: two league and Champions League winners.",
+    "criteria": [
+      [
+        "league",
+        "League consistency",
+        65,
+        [
+          100,
+          97
+        ]
+      ],
+      [
+        "attack",
+        "Attack",
+        70,
+        [
+          90,
+          100
+        ]
+      ],
+      [
+        "defence",
+        "Defensive control",
+        70,
+        [
+          100,
+          51
+        ]
+      ],
+      [
+        "europe",
+        "Europe",
+        70,
+        [
+          100,
+          100
+        ]
+      ]
+    ],
+    "scenes": [
+      [
+        "League consistency",
+        "Barcelona earned slightly more points per game.",
+        "League PPG",
+        2.53,
+        2.45,
+        "La Liga",
+        "At this level, tiny differences in consistency matter."
+      ],
+      [
+        "Firepower",
+        "Madrid scored more.",
+        "Goals per game",
+        2.5,
+        2.79,
+        "La Liga",
+        "If domination means attacking volume, Madrid has the cleaner case."
+      ],
+      [
+        "Suppression",
+        "Barcelona conceded almost half as often.",
+        "Goals conceded per game",
+        0.55,
+        1.08,
+        "La Liga \u00b7 lower is better",
+        "Control can show up as the absence of opposition chances."
+      ],
+      [
+        "Europe",
+        "Europe does not break the tie.",
+        "Champions League titles",
+        1,
+        1,
+        "that season",
+        "The trophy answers did they win \u2014 not how did they dominate."
+      ]
+    ],
+    "sources": [
+      [
+        "FBref \u2014 Barcelona 2010/11",
+        "https://fbref.com/en/squads/206d90db/2010-2011/Barcelona-Stats"
+      ],
+      [
+        "FBref \u2014 Real Madrid 2016/17",
+        "https://fbref.com/en/squads/53a2f082/2016-2017/Real-Madrid-Stats"
+      ]
+    ]
+  },
+  {
+    "id": "yamal-teenage-messi",
+    "tag": "Wonderkid",
+    "title": "Lamine Yamal vs teenage Messi",
+    "q": "Who had the better teenage season?",
+    "a": "Lamine Yamal (2025/26)",
+    "b": "Messi (2006/07)",
+    "teaser": "Near-identical goal rates \u2014 but one was already a playmaker and the other a rotation finisher.",
+    "criteria": [
+      [
+        "goal-rate",
+        "Goal rate",
+        70,
+        [
+          100,
+          98
+        ]
+      ],
+      [
+        "creation",
+        "Creation",
+        65,
+        [
+          100,
+          20
+        ]
+      ],
+      [
+        "availability",
+        "Availability",
+        55,
+        [
+          100,
+          74
+        ]
+      ],
+      [
+        "team-role",
+        "Team importance",
+        60,
+        [
+          100,
+          62
+        ]
+      ],
+      [
+        "era",
+        "Level of competition",
+        45,
+        [
+          82,
+          100
+        ]
+      ]
+    ],
+    "scenes": [
+      [
+        "Goal rate is a coin flip",
+        "In the league, the two teenage seasons score at almost exactly the same clip.",
+        "La Liga goals per 90",
+        0.64,
+        0.63,
+        "per 90",
+        "The headline number refuses to separate them."
+      ],
+      [
+        "Creation splits them",
+        "Yamal is already a primary playmaker; teenage Messi barely registered assists.",
+        "La Liga assists per 90",
+        0.44,
+        0.09,
+        "per 90",
+        "Some of the gap is era \u2014 but the roles were genuinely different."
+      ],
+      [
+        "Minutes and availability",
+        "Messi's breakthrough was stop-start behind hamstring injuries; Yamal was an ever-present.",
+        "La Liga minutes",
+        2262,
+        2004,
+        "minutes",
+        "Being on the pitch every week is itself a form of value."
+      ],
+      [
+        "All-competitions output",
+        "Across every competition, Yamal's raw contribution total is the higher of the two.",
+        "Goals + assists (all comps)",
+        43,
+        20,
+        "G+A",
+        "Volume favours Yamal; the strength-of-defence question favours Messi's era."
+      ],
+      [
+        "The age asterisk",
+        "Messi's season was his age-19 year. Yamal's was his age-18 year \u2014 his age-19 season has only just begun.",
+        "Age during the season",
+        18,
+        19,
+        "years",
+        "A one-year gap at this stage of a career is not a rounding error."
+      ]
+    ],
+    "sources": [
+      [
+        "messivsronaldo.app \u2014 Messi 2006/07",
+        "https://www.messivsronaldo.app/club-stats/2006-2007/"
+      ],
+      [
+        "StatMuse \u2014 Yamal 2025/26",
+        "https://www.statmuse.com/fc/ask?q=lamine+yamal+stats+season+2025-2026"
+      ],
+      [
+        "FC Barcelona \u2014 Yamal, 2025/26 LaLiga Player of the Season",
+        "https://www.fcbarcelona.com/en/football/first-team/news/4514485/lamine-yamal-202526-laliga-player-of-the-season"
+      ]
+    ]
+  }
+]
