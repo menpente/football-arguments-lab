@@ -38,7 +38,7 @@ def _dump(obj, path: Path) -> None:
 
 
 def _published_slugs(site_root: Path) -> set[str]:
-    manifest = site_root / "manifest.json"
+    manifest = site_root / "stories" / "manifest.json"
     if not manifest.exists():
         return set()
     try:

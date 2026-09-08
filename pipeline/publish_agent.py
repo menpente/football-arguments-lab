@@ -33,7 +33,9 @@ _env = Environment(
 
 
 def _update_index(site_root: Path, story: StorySpec) -> None:
-    manifest_path = site_root / "manifest.json"
+    stories_root = site_root / "stories"
+    stories_root.mkdir(parents=True, exist_ok=True)
+    manifest_path = stories_root / "manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else []
     manifest = [entry for entry in manifest if entry["slug"] != story.slug]
     manifest.append({
@@ -46,7 +48,7 @@ def _update_index(site_root: Path, story: StorySpec) -> None:
     manifest_path.write_text(json.dumps(manifest, indent=2))
 
     template = _env.get_template("site_index.html.j2")
-    (site_root / "index.html").write_text(template.render(stories=manifest))
+    (stories_root / "index.html").write_text(template.render(stories=manifest))
 
 
 @traced(name="publish_agent")
@@ -72,8 +74,9 @@ def publish(story: StorySpec, artifact_path: Path, site_root: Path,
 
     try:
         subprocess.run(
-            ["git", "add", str(published_path), str(site_root / "index.html"),
-             str(site_root / "manifest.json")],
+            ["git", "add", str(published_path),
+             str(site_root / "stories" / "index.html"),
+             str(site_root / "stories" / "manifest.json")],
             check=True, cwd=site_root.parent,
         )
         commit_message = f"Publish story: {story.title}"

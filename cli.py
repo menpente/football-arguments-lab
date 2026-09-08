@@ -7,6 +7,8 @@
                                        # ready to push and deploy via GitHub Pages
     python cli.py submit "Is Rodri irreplaceable for City?"   # queue a question
     python cli.py submissions list                            # show the queue
+    python cli.py debates validate                            # check data/debates.json
+    python cli.py debates publish                             # write site/index.html + site/debates.json
 """
 from __future__ import annotations
 
@@ -46,7 +48,39 @@ def main() -> int:
     subs_p = sub.add_parser("submissions", help="Inspect the submission queue")
     subs_p.add_argument("action", choices=["list"], nargs="?", default="list")
 
+    debates_p = sub.add_parser("debates", help="Validate / publish the interactive debates")
+    debates_sub = debates_p.add_subparsers(dest="debates_command", required=True)
+    debates_sub.add_parser("validate", help="Check data/debates.json")
+    pub_p = debates_sub.add_parser("publish", help="Write site/debates.json + site/index.html")
+    pub_p.add_argument("--commit", action="store_true",
+                       help="Stage + commit the published files locally.")
+
     args = parser.parse_args()
+
+    if args.command == "debates":
+        import subprocess
+
+        from pipeline.debates import (
+            DEFAULT_SRC, load_debates, publish_debates, validate_debates,
+        )
+
+        errors = validate_debates(load_debates(DEFAULT_SRC))
+        if errors:
+            print("data/debates.json is invalid:")
+            for e in errors:
+                print(f"  - {e}")
+            return 1
+
+        if args.debates_command == "validate":
+            print(f"OK - {len(load_debates(DEFAULT_SRC))} debates valid.")
+            return 0
+
+        publish_debates()
+        print("Wrote site/debates.json and site/index.html")
+        if args.commit:
+            subprocess.run(["git", "add", "site/index.html", "site/debates.json"], check=True)
+            subprocess.run(["git", "commit", "-m", "Publish debates"], check=True)
+        return 0
 
     if args.command == "submit":
         s = add_submission(args.question, note=args.note)

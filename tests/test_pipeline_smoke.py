@@ -42,10 +42,10 @@ class TestPipelineSmoke(unittest.TestCase):
                      "story_spec.json", "qa_report.json"):
             self.assertTrue((run_dir / name).exists(), f"missing {name}")
 
-        site_index = (self.tmp / "index.html").read_text()
+        site_index = (self.tmp / "stories" / "index.html").read_text()
         self.assertIn(top.better_question, site_index)
-        self.assertIn(f"stories/{published['slug']}/", site_index)
-        manifest = json.loads((self.tmp / "manifest.json").read_text())
+        self.assertIn(f"{published['slug']}/", site_index)
+        manifest = json.loads((self.tmp / "stories" / "manifest.json").read_text())
         self.assertEqual(manifest[0]["slug"], published["slug"])
 
     def test_site_root_defaults_to_output_root_when_not_given(self):
@@ -57,7 +57,7 @@ class TestPipelineSmoke(unittest.TestCase):
             gate2_action="approve",
         )
         result = run_pipeline(output_root=self.tmp, scripted=scripted)
-        self.assertTrue((self.tmp / "index.html").exists())
+        self.assertTrue((self.tmp / "stories" / "index.html").exists())
 
     def test_separate_site_root_keeps_run_logs_and_published_site_apart(self):
         reasoner = HeuristicReasoner()
@@ -72,9 +72,9 @@ class TestPipelineSmoke(unittest.TestCase):
         result = run_pipeline(output_root=output_root, site_root=site_root, scripted=scripted)
         self.assertEqual(result["stage"], "complete")
         self.assertTrue((output_root / "runs" / result["published"][0]["slug"]).exists())
-        self.assertTrue((site_root / "index.html").exists())
+        self.assertTrue((site_root / "stories" / "index.html").exists())
         self.assertTrue((site_root / "stories" / result["published"][0]["slug"] / "index.html").exists())
-        self.assertFalse((output_root / "index.html").exists())
+        self.assertFalse((output_root / "stories" / "index.html").exists())
 
     def test_refine_action_changes_the_question(self):
         reasoner = HeuristicReasoner()

@@ -59,7 +59,7 @@
 <body>
 <main>
   <h1>Football data stories</h1>
-  <p class="intro">Viral football debates, settled with data — one editorial arc at a time.</p>
+  <p class="intro"><a href="../">&larr; Play an argument</a> &nbsp;·&nbsp; Viral football debates, settled with data — one editorial arc at a time.</p>
 
   <div class="layout">
     <section>
@@ -68,7 +68,7 @@
       <ul>
         {% for story in stories %}
         <li>
-          <a class="story-card" href="stories/{{ story.slug }}/">
+          <a class="story-card" href="{{ story.slug }}/">
             <h3>{{ story.title }}</h3>
             <p>{{ story.dek }}</p>
           </a>

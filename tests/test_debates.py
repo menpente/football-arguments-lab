@@ -120,12 +120,48 @@ class TestSeedFile(unittest.TestCase):
 
 
 class TestPublishDebates(unittest.TestCase):
+    def test_publish_writes_data_and_app(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            site = Path(tmp)
+            publish_debates(DEFAULT_SRC, site)
+            data = json.loads((site / "debates.json").read_text())
+            self.assertEqual(len(data), len(load_debates(DEFAULT_SRC)))
+            app = (site / "index.html").read_text()
+            self.assertIn("fetch(", app)
+            self.assertNotIn("const debates=[", app)
+
     def test_publish_rejects_invalid_source(self):
         with tempfile.TemporaryDirectory() as tmp:
             src = Path(tmp) / "bad.json"
             src.write_text(json.dumps([_debate(id="Bad Id").to_dict()]))
             with self.assertRaises(ValueError):
                 publish_debates(src, Path(tmp))
+
+
+class TestAppTemplate(unittest.TestCase):
+    def test_template_fetches_and_has_no_inline_data(self):
+        tpl = Path("templates/debates_app.html").read_text()
+        self.assertIn('fetch("debates.json")', tpl)
+        self.assertNotIn("const debates=[", tpl)
+        self.assertIn('href="stories/"', tpl)
+
+
+class TestDebatesCli(unittest.TestCase):
+    def test_validate_subcommand_passes_on_the_seed_file(self):
+        import subprocess
+        import sys
+        r = subprocess.run([sys.executable, "cli.py", "debates", "validate"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+
+    def test_publish_subcommand_writes_site_files(self):
+        import subprocess
+        import sys
+        r = subprocess.run([sys.executable, "cli.py", "debates", "publish"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+        self.assertTrue(Path("site/debates.json").exists())
+        self.assertTrue(Path("site/index.html").exists())
 
 
 if __name__ == "__main__":
